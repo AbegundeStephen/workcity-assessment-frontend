@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import StatusBadge from "./StatusBadge";
 import { Plus, Search, Eye, Edit, Trash2, Users } from "lucide-react";
-import { mockClients } from "../data/mockClients";
 import { Client } from "../types";
 
 const ClientList: React.FC<{
+  clients: Client[];
   onClientSelect: (client: Client | null) => void;
-}> = ({ onClientSelect }) => {
+  onClientEdit: (client: Client) => void;
+  onClientDelete?: (clientId: string) => void;
+}> = ({ clients,onClientSelect, onClientEdit, onClientDelete }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<
     "all" | "active" | "inactive"
   >("all");
 
-  const filteredClients = mockClients.filter((client) => {
+  const filteredClients = clients.filter((client) => {
     const matchesSearch =
       client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       client.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -21,6 +23,16 @@ const ClientList: React.FC<{
       statusFilter === "all" || client.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
+
+  const handleDeleteClient = (clientId: string, clientName: string) => {
+    if (
+      window.confirm(
+        `Are you sure you want to delete ${clientName}? This action cannot be undone.`
+      )
+    ) {
+      onClientDelete?.(clientId);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -95,14 +107,21 @@ const ClientList: React.FC<{
               <div className="mt-4 flex space-x-2">
                 <button
                   onClick={() => onClientSelect(client)}
-                  className="flex-1 inline-flex items-center justify-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                  className="flex-1 inline-flex items-center justify-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                  title="View client details">
                   <Eye className="w-4 h-4 mr-1" />
                   View
                 </button>
-                <button className="inline-flex items-center justify-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                <button
+                  onClick={() => onClientEdit(client)}
+                  className="inline-flex items-center justify-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                  title="Edit client">
                   <Edit className="w-4 h-4" />
                 </button>
-                <button className="inline-flex items-center justify-center px-3 py-2 border border-red-300 text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50">
+                <button
+                  onClick={() => handleDeleteClient(client.id, client.name)}
+                  className="inline-flex items-center justify-center px-3 py-2 border border-red-300 text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50"
+                  title="Delete client">
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>
