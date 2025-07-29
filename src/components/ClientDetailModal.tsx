@@ -2,6 +2,7 @@ import React from "react";
 import StatusBadge from "./StatusBadge";
 import { X, DollarSign, Calendar, FolderOpen } from "lucide-react";
 import { mockProjects } from "@/data/mockProjects";
+import { Client } from "@/types";
 const ClientDetailModal: React.FC<{ client: Client; onClose: () => void }> = ({
   client,
   onClose,

@@ -1,12 +1,12 @@
 // Types
-interface User {
+export interface User {
   id: string;
   name: string;
   email: string;
   role: "admin" | "user";
 }
 
-interface Client {
+export interface Client {
   id: string;
   name: string;
   email: string;
@@ -17,7 +17,7 @@ interface Client {
   createdAt: string;
 }
 
-interface Project {
+export interface Project {
   id: string;
   title: string;
   description: string;

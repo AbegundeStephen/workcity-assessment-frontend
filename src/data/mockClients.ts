@@ -1,3 +1,4 @@
+import { Client } from "@/types";
 export const mockClients: Client[] = [
   {
     id: "1",

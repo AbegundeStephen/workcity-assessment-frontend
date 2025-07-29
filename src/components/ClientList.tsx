@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import StatusBadge from "./StatusBadge";
 import { Plus, Search, Eye, Edit, Trash2, Users } from "lucide-react";
 import { mockClients } from "../data/mockClients";
+import { Client } from "../types";
 
 const ClientList: React.FC<{
   onClientSelect: (client: Client | null) => void;
@@ -126,3 +127,5 @@ const ClientList: React.FC<{
     </div>
   );
 };
+
+export default ClientList;
