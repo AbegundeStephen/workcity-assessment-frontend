@@ -1,4 +1,4 @@
-import { useEffect, createContext, useState } from "react";
+import { useEffect, createContext, useState, useMemo } from "react";
 import { User } from "../types";
 
 const AuthContext = createContext<{
@@ -13,14 +13,12 @@ const AuthContext = createContext<{
   isAuthenticated: false,
 });
 
-
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    // Check for existing session
     const savedUser = localStorage.getItem("user");
     if (savedUser) {
       setUser(JSON.parse(savedUser));
@@ -28,7 +26,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const login = async (email: string, password: string) => {
-    // Mock login - in real app, this would call your API
     const mockUser: User = {
       id: "1",
       name: "Admin User",
@@ -44,17 +41,17 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     localStorage.removeItem("user");
   };
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        login,
-        logout,
-        isAuthenticated: !!user,
-      }}>
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({
+      user,
+      login,
+      logout,
+      isAuthenticated: !!user,
+    }),
+    [user]
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export { AuthContext, AuthProvider };

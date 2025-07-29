@@ -5,17 +5,24 @@ const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useContext(AuthContext);
+  const { login, isAuthenticated, user } = useContext(AuthContext);
+
+  console.log("LoginForm render - isAuthenticated:", isAuthenticated);
+  console.log("LoginForm render - user:", user);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    console.log("Login attempt started");
+
     try {
       await login(email, password);
+      console.log("Login completed successfully");
     } catch (error) {
       console.error("Login failed:", error);
     } finally {
       setIsLoading(false);
+      console.log("Login process finished");
     }
   };
 
@@ -26,6 +33,11 @@ const LoginForm: React.FC = () => {
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Sign in to your account
           </h2>
+          {/* Debug info */}
+          <div className="mt-4 p-2 bg-gray-100 rounded text-xs">
+            <p>Debug: isAuthenticated = {String(isAuthenticated)}</p>
+            <p>Debug: user = {user ? user.email : "null"}</p>
+          </div>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">

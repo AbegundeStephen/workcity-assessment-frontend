@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { Menu, User, LogOut } from "lucide-react";
-import { Client } from "../types";
 import { AuthContext } from "../context/AuthContext";
 const Header: React.FC<{ onToggleSidebar: () => void }> = ({
   onToggleSidebar,

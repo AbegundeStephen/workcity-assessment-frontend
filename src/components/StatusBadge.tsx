@@ -35,5 +35,4 @@ const StatusBadge: React.FC<{
   );
 };
 
-
 export default StatusBadge;
